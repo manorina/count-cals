@@ -1,0 +1,5 @@
+# Python stuff
+
+/app/__pycache__/
+/app/*.pyc
+venv/

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Food Log</title>
+    <style>
+        table { border-collapse: collapse; }
+        th, td { padding: 6px 10px; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+
+<h1>Food Log</h1>
+
+{% if log_date %}
+<p>Showing entries for {{ log_date }}</p>
+{% endif %}
+
+<table>
+    <thead>
+        <tr>
+            <th>Time</th>
+            <th>Food</th>
+            <th>Quantity (g)</th>
+            <th>Energy (kJ)</th>
+            <th>Protein (g)</th>
+            <th>Carbs (g)</th>
+            <th>Fat (g)</th>
+            <th>Fibre (g)</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in rows %}
+        <tr>
+            <td>{{ row.logged_at }}</td>
+            <td>{{ row.food_name }}</td>
+            <td>{{ row.quantity_g }}</td>
+            <td>{{ "%.0f"|format(row.energy_kj) }}</td>
+            <td>{{ "%.1f"|format(row.protein_g) }}</td>
+            <td>{{ "%.1f"|format(row.carbs_g) }}</td>
+            <td>{{ "%.1f"|format(row.fat_g) }}</td>
+            <td>{{ "%.1f"|format(row.fiber_g) }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% if totals %}
+  <!-- show totals table -->
+  <h2>Daily totals for ... </h2>
+
+  <table>
+    <tr>
+      <th>Energy (kJ)</th>
+      <th>Protein (g)</th>
+      <th>Carbs (g)</th>
+      <th>Fat (g)</th>
+      <th>Fibre (g)</th>
+    </tr>
+    <tr>
+      <td>{{ "%.1f"|format(totals.energy_kj) }}</td>
+      <td>{{ "%.1f"|format(totals.protein_g) }}</td>
+      <td>{{ "%.1f"|format(totals.carbs_g) }}</td>
+      <td>{{ "%.1f"|format(totals.fat_g) }}</td>
+      <td>{{ "%.1f"|format(totals.fiber_g) }}</td>
+    </tr>
+  </table>  
+{% endif %}
+
+
+
+</body>
+</html>
+

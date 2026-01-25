@@ -1,0 +1,15 @@
+version: "3.9"
+
+services:
+  api:
+    build: .
+    container_name: count-cals-api
+    ports:
+      - "6070:6070"
+    volumes:
+      - .:/app
+      - ./data:/app/data
+      - ./AFCD_data:/data/AFCD_data
+    environment:
+      - DB_PATH=/app/data/foods.db
+
