@@ -2,4 +2,5 @@
 
 /app/__pycache__/
 /app/*.pyc
+/app/routers/__pycache__/*
 venv/
