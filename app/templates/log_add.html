@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Add food</title>
+    <title>Testing, testing, 1,2,3 ...</title>
 </head>
 <body>
+    
 <h1>Add food to log</h1>
 
 <form method="post" action="/log/add">
@@ -26,6 +27,37 @@
     <br><br>
     <button type="submit">Add</button>
 </form>
+
+<h1> Testing food search</h1>
+    
+<input type="text" id="food-search" autocomplete="off">
+<input type="hidden" name="food_id" id="food-id">
+
+<ul id="results"></ul>
+
+<script>
+const search = document.getElementById("food-search");
+const results = document.getElementById("results");
+const foodId = document.getElementById("food-id");
+
+search.addEventListener("input", async () => {
+  if (search.value.length < 2) return;
+  const r = await fetch(`/api/foods/search?q=${search.value}`);
+  const data = await r.json();
+
+  results.innerHTML = "";
+  data.forEach(f => {
+    const li = document.createElement("li");
+    li.textContent = f.name;
+    li.onclick = () => {
+      foodId.value = f.id;
+      search.value = f.name;
+      results.innerHTML = "";
+    };
+    results.appendChild(li);
+  });
+});
+</script>
 
 </body>
 </html>
