@@ -11,6 +11,10 @@ from app.templates import templates
 router = APIRouter()
 DB_PATH = os.getenv("DB_PATH", "/app/data/foods.db")
 
+class FoodNotFound(Exception):
+    pass
+
+
 # ----  api AND form now use this insert_food_log() ----
 
 def insert_food_log(food_id: int, quantity: float, unit: str) -> int:
@@ -23,7 +27,8 @@ def insert_food_log(food_id: int, quantity: float, unit: str) -> int:
     food = cur.fetchone()
     if not food:
         conn.close()
-        raise HTTPException(status_code=404, detail="Food not found")
+        raise FoodNotFound(food_id)
+        #raise HTTPException(status_code=404, detail="Food not found")
 
     quantity_g = quantity
     if unit.lower() == "ml":
@@ -72,6 +77,26 @@ def add_food_form_post(
 ):
     insert_food_log(food_id, quantity, unit)
     return RedirectResponse("/log/view", status_code=303)
+
+#---
+@router.post("/log/add-form")
+def add_food_form_post(
+    food_id: int = Form(...),
+    quantity: float = Form(...),
+    unit: str = Form("g"),
+):
+    try:
+        insert_food_log(
+            food_id=food_id,
+            quantity=quantity,
+            unit=unit,
+        )
+    except FoodNotFound:
+        raise HTTPException(status_code=404, detail="Food not found")
+
+    return RedirectResponse("/log/view", status_code=303)
+
+
 
 # ---
 @router.get("/log/view", response_class=HTMLResponse)
