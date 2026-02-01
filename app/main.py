@@ -2,8 +2,8 @@ from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
 
 from app.db import init_db
-from app.routers.foods import router as foods_router
-from app.routers import log
+#from app.routers.foods import router as foods_router
+from app.routers import log, foods
 from app.openfoodfacts import fetch_by_barcode
 
 
@@ -14,7 +14,7 @@ app = FastAPI(
 )
 
 # --- Routers ---
-app.include_router(foods_router)
+app.include_router(foods.router)
 app.include_router(log.router)
 
 # --- Static files ---
