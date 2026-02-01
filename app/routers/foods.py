@@ -37,7 +37,8 @@ def search_foods(
         protein_100g,
         fat_100g,
         carbs_100g,
-        fiber_100g
+        fiber_100g,
+        source
     FROM foods
     WHERE {where_clauses}
     ORDER BY name
