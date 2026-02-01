@@ -18,12 +18,35 @@ def get_db():
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     return conn
+
+def get_connection():
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    return conn
     
 def init_db():
-    conn = sqlite3.connect(DB_PATH)
+    conn = get_connection()
     cur = conn.cursor()
 
-    # Create food_log table if it doesn't exist
+    # foods table (already exists, but safe)
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS foods (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        source TEXT,
+        name TEXT,
+        brand TEXT,
+        barcode TEXT,
+        energy_kj_100g REAL,
+        energy_kcal_100g REAL,
+        protein_100g REAL,
+        fat_100g REAL,
+        carbs_100g REAL,
+        fiber_100g REAL,
+        last_updated TEXT
+    )
+    """)
+
+    # food_log table
     cur.execute("""
     CREATE TABLE IF NOT EXISTS food_log (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -35,7 +58,26 @@ def init_db():
     """)
 
     conn.commit()
-    conn.close() 
+    conn.close()
+
+
+#def init_db():
+#    conn = get_connection()
+#    cur = conn.cursor()
+#
+#    # Create food_log table if it doesn't exist
+#    cur.execute("""
+#    CREATE TABLE IF NOT EXISTS food_log (
+#        id INTEGER PRIMARY KEY AUTOINCREMENT,
+#        food_id INTEGER NOT NULL,
+#        quantity_g REAL NOT NULL,
+#        consumed_at TEXT NOT NULL,
+#        FOREIGN KEY (food_id) REFERENCES foods(id)
+#    )
+#    """)
+#
+#    conn.commit()
+#    conn.close() 
  
 #def init_db():
 #    DB_PATH.parent.mkdir(parents=True, exist_ok=True)
