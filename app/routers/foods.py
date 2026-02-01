@@ -29,12 +29,26 @@ def search_foods(
     params.append(limit)
     
     sql = f"""
-    SELECT *
+    SELECT
+        id,
+        name,
+        energy_kj_100g,
+        energy_kcal_100g,
+        protein_100g,
+        fat_100g,
+        carbs_100g,
+        fiber_100g
     FROM foods
     WHERE {where_clauses}
     ORDER BY name
     LIMIT ?
     """
+    #SELECT *
+    #FROM foods
+    #WHERE {where_clauses}
+    #ORDER BY name
+    #LIMIT ?
+    
     conn = get_connection()
     rows = conn.execute(sql, params).fetchall()
     conn.close()
