@@ -2,6 +2,7 @@ from fastapi import APIRouter, HTTPException, Request, Form
 from fastapi.responses import HTMLResponse, RedirectResponse
 from pydantic import BaseModel
 from datetime import datetime, date
+from app.db import get_connection
 import sqlite3
 import os
 
@@ -13,8 +14,9 @@ DB_PATH = os.getenv("DB_PATH", "/app/data/foods.db")
 # ----  api AND form now use this insert_food_log() ----
 
 def insert_food_log(food_id: int, quantity: float, unit: str) -> int:
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
+    #conn = sqlite3.connect(DB_PATH)
+    #conn.row_factory = sqlite3.Row
+    conn = get_connection()
     cur = conn.cursor()
 
     cur.execute("SELECT * FROM foods WHERE id = ?", (food_id,))
@@ -131,8 +133,7 @@ def view_log(request: Request, log_date: date | None = None):
 # --- search - autocomplete:
 @router.get("/api/foods/search")
 def search_foods(q: str):
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
+    conn = get_connection()
     cur = conn.cursor()
 
     cur.execute("""
