@@ -3,6 +3,7 @@ from typing import List, Optional
 import sqlite3
 #from pathlib import Path
 from app.schemas import FoodOut
+from app.db import get_connection
 import os
 
 DB_PATH = os.getenv("DB_PATH", "/app/data/foods.db")
@@ -34,8 +35,7 @@ def search_foods(
     ORDER BY name
     LIMIT ?
     """
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
+    conn = get_connection()
     rows = conn.execute(sql, params).fetchall()
     conn.close()
 
