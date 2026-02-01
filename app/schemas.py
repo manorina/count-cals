@@ -23,7 +23,7 @@ class FoodOut(BaseModel):
     fat_100g: Optional[float]
     carbs_100g: Optional[float]
     fiber_100g: Optional[float]
-    source: str
+    source: Optional[str] = None
 
 
 # not sure these are being used.  See log.py for schemas defined inline there    
