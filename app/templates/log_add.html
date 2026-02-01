@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Add food to log</h2>
+
+<input
+  type="text"
+  id="food-search"
+  placeholder="Search for food..."
+  autocomplete="off"
+/>
+
+<ul id="results"></ul>
+
+<form method="post" action="/log/add-form" style="display:none" id="log-form">
+  <input type="hidden" name="food_id" id="food_id">
+
+  <p><strong id="food-name"></strong></p>
+
+  <label>
+    Quantity:
+    <input type="number" name="quantity" step="1" required>
+  </label>
+
+  <label>
+    Unit:
+    <select name="unit">
+      <option value="g">g</option>
+      <option value="ml">ml</option>
+    </select>
+  </label>
+
+  <button type="submit">Add</button>
+</form>
+
+<script src="/static/js/food_search.js"></script>
+{% endblock %}
