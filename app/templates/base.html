@@ -1,9 +1,83 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Testing, testing, 1,2,3 ...</title>
+    <meta charset="UTF-8">
+    <title>{% block title %}Count Cals{% endblock %}</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Simple default styling -->
+    <style>
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu;
+            margin: 0;
+            background: #f6f7f8;
+            color: #222;
+        }
+
+        header {
+            background: #1f2937;
+            color: white;
+            padding: 1rem 1.5rem;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.25rem;
+        }
+
+        nav a {
+            color: #9ca3af;
+            margin-right: 1rem;
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+
+        nav a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+
+        main {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 6px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #666;
+            padding: 2rem 1rem;
+        }
+    </style>
+
+    {% block head %}{% endblock %}
 </head>
+
 <body>
-  <h1>More testing ...</h1>
+<header>
+    <h1>Count Cals</h1>
+    <nav>
+        <a href="/log/add">Add food</a>
+        <a href="/log/view">Today’s log</a>
+        <a href="/log/all">All entries</a>
+    </nav>
+</header>
+
+<main>
+    {% block content %}{% endblock %}
+</main>
+
+<footer>
+    Count Cals · local & private
+</footer>
 </body>
 </html>
