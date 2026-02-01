@@ -31,23 +31,16 @@ app.include_router(foods_router)
 app.include_router(log.router)
 
 # --- jinja2 templates
-templates = Jinja2Templates(directory="app/templates")
+#templates = Jinja2Templates(directory="app/templates")
 
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 
-#app = FastAPI(
-#    title="Private Calorie Tracker",
-#    description="AFCD + Open Food Facts backend",
-#    version="0.1.0"
-#)
+#DB_PATH = Path(__file__).resolve().parent.parent / "data" / "foods.db"
+DB_PATH = os.getenv("DB_PATH", "/app/data/foods.db")
 
-DB_PATH = Path(__file__).resolve().parent.parent / "data" / "foods.db"
 
-def get_db():
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    return conn
+
 
 @app.get("/debug/foods")
 def debug_foods(limit: int = 20):
@@ -78,52 +71,6 @@ def debug_foods(limit: int = 20):
 @app.on_event("startup")
 def startup():
     init_db()
-
-#@app.get("/foods/search")
-#def search_foods(q: str):
-#    results = search_afcd(q)
-#    return [dict(r) for r in results]
-#
-#@app.get("/foods/search", response_model=List[FoodOut])
-#
-#def search_foods(
-#    q: str = Query(..., min_length=2, description="Search term"),
-#    limit: int = Query(20, ge=1, le=100),
-#    source: str | None = Query(None, description="AFCD or OFF"),
-#):
-#    conn = get_db()
-#    cur = conn.cursor()
-#
-#    sql = """
-#        SELECT
-#            id,
-#            name,
-#            energy_kj_100g,
-#            energy_kcal_100g,
-#            protein_100g,
-#            fat_100g,
-#            carbs_100g,
-#            fiber_100g,
-#            source
-#        FROM foods
-#        WHERE lower(name) LIKE lower(?)
-#    """
-#
-#    params = [f"%{q}%"]
-#
-#    if source:
-#        sql += " AND source = ?"
-#        params.append(source)
-#
-#    sql += " ORDER BY name LIMIT ?"
-#    params.append(limit)
-#
-#    cur.execute(sql, params)
-#    rows = cur.fetchall()
-#    conn.close()
-#
-#    return [dict(row) for row in rows]
-
 
 @app.get("/foods/barcode/{barcode}")
 def barcode_lookup(barcode: str):
